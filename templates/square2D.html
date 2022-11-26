@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h1>{% block title %} 2D Square Lattice {% endblock %}</h1>
+
+  <form id="form-plot" class="row" action={{ url_for("square2D.plot_lattice") }} method="POST">
+    <div class="col-xs-6">
+      <label for="ndim" class="form-label">N</label>
+      <input type="number" class="form-control" name="ndim" min="0" max="20" step="1" value="10">
+    </div>
+    <div class="col-xs-6">
+      <label for="ktemp" class="form-label">kT</label>
+      <input type="number" class="form-control" name="ktemp" min="0" step="any" value="1.0">
+    </div>
+    <div class="col-xs-12 text-center">
+      <button id="draw-plot" type="submit" class="btn btn-primary">Submit</button>
+    </div>
+  </form>
+
+  <div class="text-center">
+    <img id="form-image" src="" alt="Lattice plot"></img>
+  </div>
+
+  <form id="form-calculate" class="row" disabled>
+    <div class="col-xs-6">
+      <label for="nstep" class="form-label">Number of Steps</label>
+      <input type="number" class="form-control" name="nstep" min="10" max="100000" step="10" value="10">
+    </div>
+    <div class="col-xs-6">
+      <label for="nimg" class="form-label">Number of Images</label>
+      <input type="number" class="form-control" name="nimg" min="1" max="50" step="1" value="10">
+    </div>
+    <div class="col-xs-12 text-center">
+      <button id="calculate-image" type="submit" class="btn btn-primary" autocomplete="off" disabled>Calculate</button>
+    </div>
+  </form>
+
+  <div id="calculation-result" class="row">
+  </div>
+
+  <script type="module" src={{ url_for('static', filename='form.js') }}></script> 
+{% endblock %}

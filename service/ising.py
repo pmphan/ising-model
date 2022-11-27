@@ -36,7 +36,7 @@ class Ising2D:
             A[(i-1) % N, j],
             A[(i+1) % N, j]
         ))
-    
+
     @classmethod
     def calculate_dE(cls, A: np.ndarray, i, j) -> int:
         neighbors = cls.get_neighbors(A, i, j)
@@ -69,10 +69,10 @@ class Ising2D:
 
             if step % yield_per == 0:
                 yield A, step
-  
+
         # Return final result
-        return A, -1
-    
+        yield A, -1
+
     @classmethod
     def plot_lattice(cls, A, title, serialized_func: Callable):
         if not title:

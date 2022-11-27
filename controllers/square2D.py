@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from flask_socketio import Namespace, emit
+from flask_socketio import Namespace, emit, disconnect
 
 from service.ising import Ising2D
 from service.serialization import deserialize_array, serialize_array, serialize_plot
@@ -18,8 +18,7 @@ def index():
 
 
 class CalculationNamespace(Namespace):
-    def on_connect(self):
-        self.disconnected = False
+    disconnected_clients = set()
 
     def on_calculate(self, data):
         params : dict[str, str] = {}
@@ -31,8 +30,9 @@ class CalculationNamespace(Namespace):
         nyield = int(params['nimg'])
         array = deserialize_array(params['array'])
         for result, i in Ising2D.metropolis(array, kT, nstep, nyield):
-            if self.disconnected:
-                emit("calculated")
+            # Early termination
+            if request.sid in self.disconnected_clients:
+                self.disconnected_clients.remove(request.sid)
                 return
             title = f"{N}x{N} result at step {i} with kT={kT}"
             splot = Ising2D.plot_lattice(result, title, serialize_plot)
@@ -40,8 +40,8 @@ class CalculationNamespace(Namespace):
         emit("calculated")
 
     def on_disconnect(self):
-        self.disconnected = True
-        self.disconnect(request.sid)
+        disconnect()
+        self.disconnected_clients.add(request.sid)
 
 @sq2d_bp.route("/plot_lattice", methods=["POST"])
 def plot_lattice():
@@ -52,11 +52,10 @@ def plot_lattice():
 
     title = f"2D Square Lattice {N}x{N}, kT={kT}"
     serialized_plot = Ising2D.plot_lattice(array, title, serialize_plot)
- 
+
     serialized_array = serialize_array(array)
 
     return {
         "plot": serialized_plot,
         "array": serialized_array,
     }
-

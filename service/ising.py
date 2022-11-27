@@ -49,13 +49,12 @@ class Ising2D:
         if not nstep or nstep < 10:
             # Cap number of step at 100_000
             nstep = np.min([10 * N * M, 100_000])
-        # Cap number of return array at 10
-        if nyield > 50:
-            nyield = 50
+        # Cap number of return array at 100
+        if nyield > 100:
+            nyield = 100
         # Shouldn't have more return array than number of step
         if nyield >= nstep:
             nyield = nstep
-
         # How many step in between each yield
         yield_per = np.ceil(nstep / nyield)
         for step in range(nstep):

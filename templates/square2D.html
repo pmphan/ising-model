@@ -2,41 +2,51 @@
 
 {% block content %}
   <h1>{% block title %} 2D Square Lattice {% endblock %}</h1>
-
-  <form id="form-plot" class="row" action={{ url_for("square2D.plot_lattice") }} method="POST">
-    <div class="col-xs-6">
-      <label for="ndim" class="form-label">N</label>
-      <input type="number" class="form-control" name="ndim" min="0" max="20" step="1" value="10">
+  <div>
+    <form id="plot-form" class="row gy-2 gx-3 align-items-end" action={{ url_for("square2D.plot_lattice") }} method="POST">
+      <div class="col-3">
+        <label for="ndim" class="visually-hidden" for="autoSizingInputGroup">N=</label>
+        <div class="input-group">
+          <div class="input-group-text">N=</div>
+          <input id="ndim" type="number" class="form-control" name="ndim" min="2" max="100" step="1" value="80" autocomplete="off">
+        </div>
+      </div>
+      <div class="col-3">
+        <label for="ktemp" class="visually-hidden" for="autoSizingInputGroup">kT=</label>
+        <div class="input-group">
+          <div class="input-group-text">kT=</div>
+          <input id="ktemp" type="number" class="form-control" name="ktemp" min="0.00" max="5.00" step="0.01" value="1.00" autocomplete="off">
+        </div>
+      </div>
+      <div class="col-3">
+        <button id="plot-button" type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+    <div class="row gy-2 gx-3">
+        <img id="plot-image" class="col-6" src="{{ url_for('static', filename='assets/placeholder.png')}}" alt="Lattice plot"></img>
     </div>
-    <div class="col-xs-6">
-      <label for="ktemp" class="form-label">kT</label>
-      <input type="number" class="form-control" name="ktemp" min="0" step="any" value="1.0">
-    </div>
-    <div class="col-xs-12 text-center">
-      <button id="draw-plot" type="submit" class="btn btn-primary">Submit</button>
-    </div>
-  </form>
-
-  <div class="text-center">
-    <img id="form-image" src="" alt="Lattice plot"></img>
   </div>
 
-  <form id="form-calculate" class="row" disabled>
-    <div class="col-xs-6">
-      <label for="nstep" class="form-label">Number of Steps</label>
-      <input type="number" class="form-control" name="nstep" min="10" max="100000" step="10" value="10">
+  <div>
+    <form id="calculation-form" class="row gy-2 gx-3 align-items-end">
+      <div class="col-3">
+        <label for="nstep" class="form-label">Number of Sweeps</label>
+        <input id="nstep" type="number" class="form-control" name="nstep" min="10" max="10000" step="10" value="100">
+      </div>
+      <div class="col-3">
+        <label for="nimg" class="form-label">Number of Images</label>
+        <input id="nimg" type="number" class="form-control" name="nimg" min="1" max="100" step="1" value="50">
+      </div>
+      <div class="col-3">
+        <button id="calculation-button" type="submit" class="btn btn-primary" autocomplete="off" disabled>Calculate</button>
+      </div>
+    </form>
+    <div class="row gy-2 gx-3 align-items-start">
+      <img id="calculation-window" class="col-6" src="{{ url_for('static', filename='assets/placeholder.png')}}", alt="Ising animation">
+      <div class="col-6">
+        <div id="calculation-frame" class="row my-5"></div>
+      </div>
     </div>
-    <div class="col-xs-6">
-      <label for="nimg" class="form-label">Number of Images</label>
-      <input type="number" class="form-control" name="nimg" min="1" max="50" step="1" value="10">
-    </div>
-    <div class="col-xs-12 text-center">
-      <button id="calculate-image" type="submit" class="btn btn-primary" autocomplete="off" disabled>Calculate</button>
-    </div>
-  </form>
-
-  <div id="calculation-result" class="row">
   </div>
-
-  <script type="module" src={{ url_for('static', filename='form.js') }}></script> 
+  <script src={{ url_for('static', filename='form.js') }}></script> 
 {% endblock %}

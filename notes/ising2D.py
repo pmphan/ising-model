@@ -1,5 +1,6 @@
 import numpy as np
 import numpy.typing as npt
+import matplotlib.pyplot as plt
 
 def start_array(n, m):
     """
@@ -56,6 +57,11 @@ def get_ising_array():
 def main():
     for array in get_ising_array():
         print(array)
+    # Generate placeholder file
+    A = np.ones([20, 20])
+    plt.imshow(A)
+    plt.title('20x20 placeholder lattice')
+    plt.savefig('static/assets/placeholder.png', format='png', transparent=True)
 
 if __name__ == "__main__":
     main()

@@ -19,8 +19,8 @@ def serialize_array(raw: np.ndarray):
 
 def deserialize_array(serialized: str):
     stream = BytesIO()
-    dserialized = b64decode(serialized.encode())
-    stream.write(dserialized)
+    deserialized = b64decode(serialized.encode())
+    stream.write(deserialized)
     stream.seek(0)
     raw = np.load(stream)
     stream.close()

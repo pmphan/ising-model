@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 
-{% block content %}
-  <h1>{% block title %} 2D Square Lattice {% endblock %}</h1>
+{% block content %} 
+<h1>{% block title %} {{ ns }} Simulation {% endblock %}</h1>
   <div>
-    <form id="plot-form" class="row gy-2 gx-3 align-items-end" action={{ url_for("square2D.plot_lattice") }} method="POST">
+      <form id="plot-form" class="row gy-2 gx-3 align-items-end" action={{ url_for(ns+".plot_lattice") }} method="POST">
       <div class="col-3">
         <label for="ndim" class="visually-hidden" for="autoSizingInputGroup">N=</label>
         <div class="input-group">
@@ -39,6 +39,9 @@
       </div>
       <div class="col-3">
         <button id="calculation-button" type="submit" class="btn btn-primary" autocomplete="off" disabled>Calculate</button>
+      </div>
+      <div class="invisible">
+        <input name="ns" value={{ ns }}></input>
       </div>
     </form>
     <div class="row gy-2 gx-3 align-items-start">

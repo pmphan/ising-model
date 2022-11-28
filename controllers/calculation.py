@@ -26,12 +26,12 @@ class CalculationNamespace(Namespace):
         for result, i in Class2D.metropolis(array, kT, nstep, nyield):
             # Early termination
             if request.sid in self.disconnected_clients:
+                self.disconnected_clients.remove(request.sid)
                 break
             title = f"{N}x{N} result at step {i} with kT={kT}"
             splot = Class2D.plot_lattice(result, title, serialize_plot)
             emit("calculating", {'i': i, 'plot': splot})
 
-        self.disconnected_clients.remove(request.sid)
         emit("calculated")
 
     def on_stop(self):

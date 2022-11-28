@@ -24,7 +24,8 @@ $(document).ready(() => {
     $("#calculation-form").submit(function(e) {
         e.preventDefault();
         $("#calculation-frame").html('');
-        $('button').attr('disabled', true);
+        $(':button').attr('disabled', true);
+        $('#stop-anim-button').removeAttr('disabled');
         socket.emit("calculate", cached.concat($(this).serializeArray()));
     });
 
@@ -51,7 +52,8 @@ $(document).ready(() => {
 
     // On finishing calculation
     socket.on('calculated', () => {
-        $('button').removeAttr("disabled");
+        $(':button').removeAttr("disabled");
+        $('#stop-anim-button').attr('disabled', true).html('Stop');
         makeClickablePreview();
     });
 });
@@ -66,3 +68,7 @@ function makeClickablePreview() {
     }).css('cursor', 'pointer');
 }
 
+function stopAnimation() {
+    socket.emit("stop");
+    $("#stop-anim-button").html("Stopping...");
+}

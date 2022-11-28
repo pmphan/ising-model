@@ -2,54 +2,9 @@
 
 {% block content %} 
 <h1>{% block title %} {{ ns }} Simulation {% endblock %}</h1>
-  <div>
-      <form id="plot-form" class="row gy-2 gx-3 align-items-end" action={{ url_for(ns+".plot_lattice") }} method="POST">
-      <div class="col-3">
-        <label for="ndim" class="visually-hidden" for="autoSizingInputGroup">N=</label>
-        <div class="input-group">
-          <div class="input-group-text">N=</div>
-          <input id="ndim" type="number" class="form-control" name="ndim" min="2" max="100" step="1" value="80" autocomplete="off">
-        </div>
-      </div>
-      <div class="col-3">
-        <label for="ktemp" class="visually-hidden" for="autoSizingInputGroup">kT=</label>
-        <div class="input-group">
-          <div class="input-group-text">kT=</div>
-          <input id="ktemp" type="number" class="form-control" name="ktemp" min="0.00" max="5.00" step="0.01" value="1.00" autocomplete="off">
-        </div>
-      </div>
-      <div class="col-3">
-        <button id="plot-button" type="submit" class="btn btn-primary">Submit</button>
-      </div>
-    </form>
-    <div class="row gy-2 gx-3">
-        <img id="plot-image" class="col-6" src="{{ url_for('static', filename='assets/placeholder.png')}}" alt="Lattice plot"></img>
-    </div>
-  </div>
 
-  <div>
-    <form id="calculation-form" class="row gy-2 gx-3 align-items-end">
-      <div class="col-3">
-        <label for="nstep" class="form-label">Number of Sweeps</label>
-        <input id="nstep" type="number" class="form-control" name="nstep" min="10" max="10000" step="10" value="100">
-      </div>
-      <div class="col-3">
-        <label for="nimg" class="form-label">Number of Images</label>
-        <input id="nimg" type="number" class="form-control" name="nimg" min="1" max="100" step="1" value="50">
-      </div>
-      <div class="col-3">
-        <button id="calculation-button" type="submit" class="btn btn-primary" autocomplete="off" disabled>Calculate</button>
-      </div>
-      <div class="invisible">
-        <input name="ns" value={{ ns }}></input>
-      </div>
-    </form>
-    <div class="row gy-2 gx-3 align-items-start">
-      <img id="calculation-window" class="col-6" src="{{ url_for('static', filename='assets/placeholder.png')}}", alt="Ising animation">
-      <div class="col-6">
-        <div id="calculation-frame" class="row my-5"></div>
-      </div>
-    </div>
-  </div>
+  {% include "plot_form.html" %}
+  {% include "animate_form.html" %}
+
   <script src={{ url_for('static', filename='form.js') }}></script> 
 {% endblock %}
